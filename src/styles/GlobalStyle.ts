@@ -3,8 +3,8 @@ import { createGlobalStyle } from 'styled-components'
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Couture',
-    src: url('/path-to-your-font/Couture-Bold.woff2') format('woff2'),
-         url('/path-to-your-font/Couture-Bold.woff') format('woff'),
+    src: url('public/assets/COUTURE Bold.woff') format('woff'),
+         url('public/assets/COUTURE Bold.woff2') format('woff2'),
     font-weight: bold,
     font-style: normal,
   }

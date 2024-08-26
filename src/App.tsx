@@ -1,25 +1,23 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
-import Home from './components/pages/Home';
-import About from './components/pages/About';
-import Login from './components/auth/Login';
+import FloatingBubbles from './components/common/FloatingBubbles';
+import styled from 'styled-components';
+
+const MainContainer = styled.div`
+  position: relative;
+  min-height: 100vh;
+  background-color: black;
+  color: white;
+`;
 
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-        <Footer />
-      </Router>
-    </AuthProvider>
+    <MainContainer>
+      <Header />
+      <FloatingBubbles />
+      <Footer />
+    </MainContainer>
   );
 };
 
