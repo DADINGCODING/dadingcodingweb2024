@@ -1,51 +1,37 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react'
+import React, { createContext, useContext, ReactNode, useState } from 'react';
 
 interface AuthContextType {
-  isAuthenticated: boolean
-  login: (username: string, password: string) => boolean
-  logout: () => void
-  username: string | null
+  isAuthenticated: boolean;
+  login: (username: string, password: string) => void;
+  logout: () => void;
 }
 
-const initialAuthContext: AuthContextType = {
-  isAuthenticated: false,
-  login: () => false,
-  logout: () => {},
-  username: null
-}
-
-const AuthContext = createContext<AuthContextType>(initialAuthContext)
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export const useAuth = () => {
-  return useContext(AuthContext)
-}
-
-interface AuthProviderProps {
-  children: ReactNode
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [username, setUsername] = useState<string | null>(null)
-
-  const login = (inputUsername: string, password: string) => {
-    // 임시로 username이 'admin'이고 password가 'password'일 때 로그인 성공으로 처리
-    if (inputUsername === 'admin' && password === 'password') {
-      setIsAuthenticated(true)
-      setUsername(inputUsername)
-      return true
-    }
-    return false
+  const context = useContext(AuthContext);
+  if (context === null) {
+    throw new Error('useAuth must be used within an AuthProvider');
   }
+  return context;
+};
+
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const login = (username: string, password: string) => {
+    // 실제 로그인 로직은 나중에 구현
+    console.log('Login attempt:', username, password);
+    setIsAuthenticated(true);
+  };
 
   const logout = () => {
-    setIsAuthenticated(false)
-    setUsername(null)
-  }
+    setIsAuthenticated(false);
+  };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, username }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};

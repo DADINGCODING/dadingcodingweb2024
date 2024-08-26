@@ -1,25 +1,18 @@
-import React, { useState } from 'react'
-import { useAuth } from '../../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const { isAuthenticated, login } = useAuth()
-  const navigate = useNavigate()
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (login(username, password)) {
-      navigate('/')
-    } else {
-      alert('Login failed. Please try again.')
-    }
-  }
-
-  if (isAuthenticated) {
-    return <p>You are already logged in.</p>
-  }
+    e.preventDefault();
+    login(username, password);
+    navigate('/');
+  };
 
   return (
     <form onSubmit={handleLogin}>
@@ -37,7 +30,7 @@ const Login: React.FC = () => {
       />
       <button type="submit">Log In</button>
     </form>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
