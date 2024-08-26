@@ -1,0 +1,42 @@
+.footer {
+    background-color: black;
+    color: white;
+    padding: 2rem 0;
+    font-family: 'Pretendard', sans-serif;
+  }
+  
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  .contact-us h2 {
+    color: #B9FF82;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .contact-links {
+    display: flex;
+    justify-content: space-between;
+    max-width: 400px;
+  }
+  
+  .contact-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.25rem;
+  }
+  
+  .footer-line {
+    height: 1px;
+    background-color: #B9FF82;
+    margin: 2rem 0;
+  }
+  
+  .copyright {
+    text-align: center;
+    font-size: 0.9rem;
+  }
