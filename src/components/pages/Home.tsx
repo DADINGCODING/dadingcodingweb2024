@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled, { keyframes } from 'styled-components';
 
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
 const Home: React.FC = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
 
@@ -11,7 +16,6 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -40,20 +44,22 @@ const Home: React.FC = () => {
         <ActivityTitle>대딩코딩 활동 소개</ActivityTitle>
         <ActivityCards>
           <ActivityCard>
-            <CardTitle>제목어쩌구</CardTitle>
-            <CardContent>어쩌구저쩌구 설명어쩌구저쩌구 설명 어쩌구저쩌구 설명어쩌구저쩌구 설명</CardContent>
+            <CardTitle>교육 봉사</CardTitle>
+            <CardContent>학생들에게 코딩의 기초부터 심화까지 가르칩니다.</CardContent>
           </ActivityCard>
-          {/* Add more ActivityCard components as needed */}
+          <ActivityCard>
+            <CardTitle>프로젝트</CardTitle>
+            <CardContent>팀을 이루어 실제 문제를 해결하는 프로젝트를 수행합니다.</CardContent>
+          </ActivityCard>
+          <ActivityCard>
+            <CardTitle>네트워킹</CardTitle>
+            <CardContent>코딩에 관심있는 대학생들과 교류하고 성장합니다.</CardContent>
+          </ActivityCard>
         </ActivityCards>
       </ActivitySection>
     </HomeContainer>
   );
 };
-
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
 
 const HomeContainer = styled.div`
   background-color: #000;

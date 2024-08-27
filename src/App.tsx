@@ -1,22 +1,30 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
-import Home from './components/pages/Home';
-import About from './components/pages/About';
+import GlobalStyle from './styles/GlobalStyle';
+
+const Home = lazy(() => import('./components/pages/Home'));
+const About = lazy(() => import('./components/pages/About'));
+const Tutor = lazy(() => import('./components/pages/Tutor'));
+const Notice = lazy(() => import('./components/pages/Notice'));
 
 const App: React.FC = () => {
   return (
     <Router>
       <AppContainer>
+        <GlobalStyle />
         <Header />
         <MainContent>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            {/* Add other routes as needed */}
-          </Routes>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/tutor" element={<Tutor />} />
+              <Route path="/notice" element={<Notice />} />
+            </Routes>
+          </Suspense>
         </MainContent>
         <Footer />
       </AppContainer>

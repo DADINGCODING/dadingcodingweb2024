@@ -5,11 +5,12 @@ const Footer: React.FC = () => {
   return (
     <FooterContainer>
       <FooterContent>
-        <FooterLink href="https://www.instagram.com/dadingcoding">INSTAGRAM</FooterLink>
-        <FooterLink href="https://www.seoulvolunteer.org">서울동행</FooterLink>
+        <FooterLink href="https://www.instagram.com/dadingcoding" target="_blank" rel="noopener noreferrer">INSTAGRAM</FooterLink>
+        <FooterLink href="https://www.seoulvolunteer.org" target="_blank" rel="noopener noreferrer">서울동행</FooterLink>
         <FooterLink href="mailto:president@dadingcoding.org">회장 연락처</FooterLink>
       </FooterContent>
       <FooterDivider />
+      <Copyright>&copy; 2024 DADINGCODING. All rights reserved.</Copyright>
     </FooterContainer>
   );
 };
@@ -30,6 +31,7 @@ const FooterLink = styled.a`
   color: #fff;
   text-decoration: none;
   font-size: 16px;
+  transition: color 0.3s ease;
 
   &:hover {
     color: #B9FF82;
@@ -38,9 +40,15 @@ const FooterLink = styled.a`
 
 const FooterDivider = styled.hr`
   border: none;
-  border-top: 1px solid #fff;
+  border-top: 1px solid #333;
   margin: 20px auto;
   width: 80%;
+`;
+
+const Copyright = styled.p`
+  text-align: center;
+  font-size: 14px;
+  color: #666;
 `;
 
 export default Footer;
