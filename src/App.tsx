@@ -1,30 +1,22 @@
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
+import Home from './components/pages/Home';
+import About from './components/pages/About';
 import GlobalStyle from './styles/GlobalStyle';
-
-const Home = lazy(() => import('./components/pages/Home'));
-const About = lazy(() => import('./components/pages/About'));
-const Tutor = lazy(() => import('./components/pages/Tutor'));
-const Notice = lazy(() => import('./components/pages/Notice'));
 
 const App: React.FC = () => {
   return (
     <Router>
+      <GlobalStyle />
       <AppContainer>
-        <GlobalStyle />
         <Header />
         <MainContent>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/tutor" element={<Tutor />} />
-              <Route path="/notice" element={<Notice />} />
-            </Routes>
-          </Suspense>
+          <Routes>
+            <Route path="/" element={<CombinedPages />} />
+          </Routes>
         </MainContent>
         <Footer />
       </AppContainer>
@@ -32,17 +24,26 @@ const App: React.FC = () => {
   );
 };
 
+const CombinedPages: React.FC = () => {
+  const location = useLocation();
+  const hash = location.hash;
+
+  return (
+    <>
+      <Home />
+      <About />
+    </>
+  );
+};
+
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #000000;
-  color: white;
 `;
 
 const MainContent = styled.main`
   flex: 1;
-  padding-top: 80px; // Adjust based on your header height
 `;
 
 export default App;
