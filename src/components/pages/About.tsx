@@ -1,50 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import FloatingBubbles from '../common/FloatingBubbles';
 
-interface ActivityItem {
-  title: string;
-  content: string;
-  emoji: string;
-}
-
-const activityData: ActivityItem[] = [
-  {
-    title: "대딩코딩이란",
-    content: "2021년 8월에 시작된\n코딩 교육 봉사 동아리입니다.",
-    emoji: "🏫"
-  },
-  {
-    title: "우리의 비전",
-    content: "프로그래밍 사고력 증진을 목표로,\n효과적인 코딩 교육을 제공합니다.",
-    emoji: "🚀"
-  },
-  {
-    title: "튜터 활동",
-    content: "매달 1회 온라인 회의,\n주 1회 2시간 수업 진행 및\n활동일지 제출.",
-    emoji: "👨‍🏫"
-  },
-  {
-    title: "수업 내용",
-    content: "Python 기초부터\n간단한 알고리즘 문제풀이까지\n다양한 프로그램 제공.",
-    emoji: "💻"
-  },
-  {
-    title: "7기 튜터 모집",
-    content: "9월 6일~13일 서류접수,\n19일~22일 면접,\n23일 발표, 29일 OT(대면)",
-    emoji: "📅"
-  },
-  {
-    title: "학생 모집",
-    content: "9월 9일~20일 모집,\n10월 1일~11월 30일 중\n6주 수업 (2주 휴식)",
-    emoji: "🎓"
-  },
-  {
-    title: "활동 혜택",
-    content: "봉사시간 인정(32시간, 임원진 40시간),\n수료증 발급, 문화 혜택 제공",
-    emoji: "🎉"
-  }
+const activityData = [
+  { emoji: "🏫", title: "대딩코딩이란", content: "2021년 8월에 시작된\n코딩 교육 봉사 동아리입니다." },
+  { emoji: "🚀", title: "우리의 비전", content: "프로그래밍 사고력 증진을 목표로,\n효과적인 코딩 교육을 제공합니다." },
+  { emoji: "👨‍🏫", title: "튜터 활동", content: "매달 1회 온라인 회의,\n주 1회 2시간 수업 진행 및\n활동일지 제출." },
+  { emoji: "💻", title: "수업 내용", content: "Python 기초부터\n간단한 알고리즘 문제풀이까지\n다양한 프로그램 제공." },
+  { emoji: "📅", title: "7기 튜터 모집", content: "9월 6일~13일 서류접수,\n19일~22일 면접,\n23일 발표, 29일 OT(대면)" },
+  { emoji: "🎓", title: "학생 모집", content: "9월 9일~20일 모집,\n10월 1일~11월 30일 중\n6주 수업 (2주 휴식)" },
+  { emoji: "🎉", title: "활동 혜택", content: "봉사시간 인정(32시간, 임원진 40시간),\n수료증 발급, 문화 혜택 제공" },
 ];
+
 const About: React.FC = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const aboutRef = useRef<HTMLDivElement>(null);
@@ -64,74 +31,66 @@ const About: React.FC = () => {
   return (
     <AboutContainer ref={aboutRef}>
       <FloatingBubbles />
-      <CircularBackground>
-        <BackgroundImage src="/assets/images/about_circular.jpeg" alt="Background" />
-        <BackgroundOverlay />
-      </CircularBackground>
-
+      <BackgroundImage src="/assets/images/about_circular.jpeg" alt="Background" />
       <Content>
         <IntroSection>
-          <Line />
-          <Line2 />
-          <Line3 />
-          <IntroText>
-            <div>안녕!</div>
-            <div>우리의 활동들을</div>
-            <div>소개할게</div>
-          </IntroText>
           <ActivityIntro>
             <ActivityIntroBox>대딩코딩 활동 소개</ActivityIntroBox>
           </ActivityIntro>
+          <IntroText>
+            <IntroLine>우리의 활동들을</IntroLine>
+            <IntroLine>소개할게</IntroLine>
+          </IntroText>
           <WhatWeDo>what we do!</WhatWeDo>
         </IntroSection>
 
         <CardSection ref={cardsRef} visible={cardsVisible}>
           {activityData.map((activity, index) => (
-            <ActivityCard key={index} index={index} visible={cardsVisible}>
-              <CardEmoji>{activity.emoji}</CardEmoji>
-              <CardContent>
-                <CardTitle>{activity.title}</CardTitle>
-                <CardDescription>{activity.content}</CardDescription>
-              </CardContent>
-            </ActivityCard>
+            <Card key={index}>
+              <CardInner>
+                <CardEmoji>{activity.emoji}</CardEmoji>
+                <CardContent>
+                  <CardTitle>{activity.title}</CardTitle>
+                  <CardDescription>{activity.content}</CardDescription>
+                </CardContent>
+              </CardInner>
+            </Card>
           ))}
         </CardSection>
+
+        <SchoolSection>
+          <SchoolTitle>협약 학교</SchoolTitle>
+          <SchoolContainer>
+            <SchoolCard>
+              <SchoolImage src="/assets/images/school1.jpg" alt="동북고등학교" />
+              <SchoolName>동북고등학교</SchoolName>
+            </SchoolCard>
+            <SchoolCard>
+              <SchoolImage src="/assets/images/school2.jpg" alt="서울여자고등학교" />
+              <SchoolName>서울여자고등학교</SchoolName>
+            </SchoolCard>
+          </SchoolContainer>
+        </SchoolSection>
       </Content>
-      <BackgroundTextWrapper>DADING CODING</BackgroundTextWrapper>
     </AboutContainer>
   );
 };
 
 const AboutContainer = styled.div`
   position: relative;
-  min-height: 200vh;
+  min-height: 100vh;
   overflow: hidden;
   background: linear-gradient(to bottom, #000000, #1a1a1a);
 `;
 
-const CircularBackground = styled.div`
-  position: absolute;
-  width: 1361.99px;
-  height: 474.07px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 923px;
-  overflow: hidden;
-`;
-
 const BackgroundImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
-
-const BackgroundOverlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.70);
+  object-fit: cover;
+  opacity: 0.3;
 `;
 
 const Content = styled.div`
@@ -141,181 +100,105 @@ const Content = styled.div`
   color: #fff;
 `;
 
-const FloatingElements = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-`;
-
-const FloatingBox = styled.div`
-  position: absolute;
-  width: 130.51px;
-  height: 46.93px;
-  background: linear-gradient(180deg, rgba(227.44, 255, 203.32, 0.80) 0%, rgba(199, 255, 150, 0.80) 64%, rgba(119.40, 153, 90, 0.80) 100%);
-  border-radius: 28px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: black;
-  font-size: 16px;
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 600;
-`;
-
-const DadingCodingText = styled.div`
-  position: absolute;
-  width: 100%;
-  top: 451.36px;
-  color: rgba(185, 255, 130, 0.30);
-  font-size: 200px;
-  font-family: 'Couture', sans-serif;
-  font-weight: 700;
-  line-height: 21px;
-  text-align: center;
-  white-space: nowrap;
-`;
-
 const IntroSection = styled.div`
   position: relative;
-  width: 836.13px;
-  height: 466.30px;
+  width: 100%;
+  max-width: 836px;
   margin: 0 auto;
-`;
-
-const Line = styled.div`
-  width: 258.66px;
-  height: 0;
-  left: 0;
-  top: 129.69px;
-  position: absolute;
-  border: 4px #B9FF82 solid;
-`;
-
-const Line2 = styled.div`
-  width: 75.34px;
-  height: 0;
-  left: 122.21px;
-  top: 258.06px;
-  position: absolute;
-  border: 4px #B9FF82 solid;
-`;
-
-const Line3 = styled.div`
-  width: 83.20px;
-  height: 0;
-  left: 272.84px;
-  top: 183.62px;
-  position: absolute;
-  border: 4px #B9FF82 solid;
-`;
-
-const IntroText = styled.div`
-  position: absolute;
-  left: 0;
-  top: 100.80px;
-  color: white;
-  font-size: 41.76px;
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 700;
-
-  div {
-    margin-bottom: 20px;
-  }
+  text-align: left;
 `;
 
 const ActivityIntro = styled.div`
-  position: absolute;
-  left: 0;
-  top: 0;
+  margin-bottom: 40px;
 `;
 
 const ActivityIntroBox = styled.div`
-  width: 227.92px;
-  height: 43.69px;
+  display: inline-block;
+  padding: 10px 20px;
   background: black;
-  box-shadow: 1.74px 2.61px 7.13px rgba(0, 0, 0, 0.25);
-  border-radius: 47.84px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: #B9FF82;
-  font-size: 20.88px;
+  font-size: 20px;
   font-family: 'Pretendard', sans-serif;
   font-weight: 600;
+  border-radius: 30px;
+`;
+
+const IntroText = styled.div`
+  font-size: 42px;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 20px;
+`;
+
+const IntroLine = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  &::before {
+    content: '';
+    height: 4px;
+    background-color: #B9FF82;
+    margin-right: 10px;
+    transition: width 0.5s ease-out;
+  }
+
+  &:nth-child(1)::before { width: 258px; }
+  &:nth-child(2)::before { width: 75px; }
 `;
 
 const WhatWeDo = styled.div`
-  position: absolute;
-  left: 0;
-  bottom: 0;
   color: #B9FF82;
-  font-size: 20.88px;
+  font-size: 21px;
   font-family: 'NeoDunggeunmo Pro', sans-serif;
-`;
-
-
-const cardAppear = (index: number) => keyframes`
-  0% {
-    opacity: 0;
-    transform: translateY(100px) translateX(${index * 50}px) rotate(${index * 5}deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) translateX(0) rotate(0);
-  }
+  margin-top: 20px;
 `;
 
 const CardSection = styled.div<{ visible: boolean }>`
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  height: 100vh;
-  transition: opacity 0.5s ease;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px 0;
+  margin-top: 60px;
+  transition: opacity 0.5s ease, transform 0.5s ease;
   opacity: ${props => props.visible ? 1 : 0};
-  overflow-x: auto;
-  padding: 0 20px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-
-  &::-webkit-scrollbar {
-    height: 8px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: rgba(185, 255, 130, 0.5);
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
+  transform: ${props => props.visible ? 'translateY(0)' : 'translateY(50px)'};
 `;
 
-const ActivityCard = styled.div<{ index: number; visible: boolean }>`
-  flex: 0 0 300px;
-  height: 400px;
-  margin-right: 20px;
-  background: linear-gradient(180deg, rgba(227.44, 255, 203.32, 0.80) 0%, rgba(199, 255, 150, 0.80) 64%, rgba(119.40, 153, 90, 0.80) 100%);
+const Card = styled.div`
+  flex: 0 1 calc(33.333% - 20px);
+  min-width: 280px;
+  height: 280px;
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
-  padding: 20px;
-  transition: all 0.5s ease;
-  opacity: ${props => props.visible ? 1 : 0};
-  animation: ${props => props.visible ? cardAppear(props.index) : 'none'} 1s ease forwards;
-  animation-delay: ${props => props.index * 0.1}s;
-  scroll-snap-align: start;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
     transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
+`;
+
+const CardInner = styled.div`
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 `;
 
 const CardEmoji = styled.div`
   font-size: 48px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 `;
 
 const CardContent = styled.div`
-  color: black;
+  color: white;
 `;
 
 const CardTitle = styled.h3`
@@ -324,8 +207,46 @@ const CardTitle = styled.h3`
 `;
 
 const CardDescription = styled.p`
-  font-size: 18px;
+  font-size: 16px;
   white-space: pre-line;
+`;
+
+const SchoolSection = styled.div`
+  margin-top: 60px;
+`;
+
+const SchoolTitle = styled.h2`
+  font-size: 32px;
+  color: #B9FF82;
+  margin-bottom: 20px;
+`;
+
+const SchoolContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+`;
+
+const SchoolCard = styled.div`
+  width: 45%;
+  margin-bottom: 20px;
+  background: rgba(185, 255, 130, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+`;
+
+const SchoolImage = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+`;
+
+const SchoolName = styled.h3`
+  font-size: 24px;
+  color: #fff;
+  text-align: center;
 `;
 
 export default About;

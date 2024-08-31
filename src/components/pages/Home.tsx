@@ -1,15 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import FloatingBubbles from '../common/FloatingBubbles';
 
 const Home: React.FC = () => {
   const contentRef = useRef<HTMLDivElement>(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
+      const position = window.pageYOffset;
+      setScrollPosition(position);
       if (contentRef.current) {
-        const scrollPosition = window.pageYOffset;
-        const opacity = 1 - Math.min(scrollPosition / window.innerHeight, 1);
+        const opacity = 1 - Math.min(position / window.innerHeight, 1);
         contentRef.current.style.opacity = opacity.toString();
       }
     };
@@ -49,12 +51,13 @@ const Home: React.FC = () => {
 
 const HomeContainer = styled.div`
   position: relative;
-  min-height: 200vh;
+  height: 100vh;
   background: linear-gradient(to bottom, #000000, #1a1a1a);
+  overflow: hidden;
 `;
 
 const ContentWrapper = styled.div`
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -120,10 +123,12 @@ const Description = styled.p`
   font-weight: 300;
   line-height: 1.4;
   margin-top: 40px;
+  color: white;  // 글씨 색상을 흰색으로 변경
 `;
 
 const Strong = styled.span`
   font-weight: 600;
+  color: white;  // Strong 부분도 흰색으로 유지
 `;
 
 const float = keyframes`
