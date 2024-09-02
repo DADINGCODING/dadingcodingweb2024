@@ -1,23 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
-import { useRole } from '../../hooks/useRole';
-import { User } from '../../types/user';  
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, logout } = useAuth();
-  const { isAdmin } = useRole();
 
-  const handleLogoClick = () => {
-    navigate('/');
-    window.scrollTo(0, 0);
-  };
-
-  const handleAboutClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
+  const handleAboutClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     if (location.pathname === '/') {
       const aboutSection = document.getElementById('about');
       if (aboutSection) {
@@ -28,48 +18,26 @@ const Header: React.FC = () => {
     }
   };
 
-  const handleAuthAction = () => {
-    if (user) {
-      logout();
-    } else {
-      navigate('/login');
-    }
-  };
   return (
     <HeaderContainer>
-      <HeaderContent>
-        <LogoWrapper onClick={handleLogoClick}>
-          <Logo src="/mainlogo2024.png" alt="DADINGCODING" />
-        </LogoWrapper>
-        <NavWrapper>
-          <NavLinks>
-            <NavLink to="/notice">Notice</NavLink>
-            <NavLink to="/#about" onClick={handleAboutClick}>About</NavLink>
-            <NavLink to="/tutor">Tutor</NavLink>
-            {user && <NavLink to="/mypage">My Page</NavLink>}
-          </NavLinks>
-        </NavWrapper>
-        <RightSection>
-          {user ? (
-            <>
-              <UserInfo>{`${user.name}${isAdmin ? '(관리자)' : ''} 님 안녕하세요!`}</UserInfo>
-              <AuthButton onClick={handleAuthAction}>Logout</AuthButton>
-            </>
-          ) : (
-            <>
-              <AuthButton onClick={handleAuthAction}>Login</AuthButton>
-              <JoinUsButton onClick={() => navigate('/joinus')}>Join us!</JoinUsButton>
-            </>
-          )}
-        </RightSection>
-      </HeaderContent>
+      <Logo src="/mainlogo2024.png" alt="DADINGCODING" onClick={() => navigate('/')} />
+      <NavWrapper>
+        <NavLink to="/notice">Notice</NavLink>
+        <NavLink to="/#about" onClick={handleAboutClick}>About</NavLink>
+        <NavLink to="/tutor">Tutor</NavLink>
+        <NavLink to="/login">Login</NavLink>
+      </NavWrapper>
+      <JoinUsButton onClick={() => navigate('/register')}>Join us!</JoinUsButton>
     </HeaderContainer>
   );
 };
 
 const HeaderContainer = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
   background-color: black;
-  color: #fff;
   position: fixed;
   top: 0;
   left: 0;
@@ -77,71 +45,39 @@ const HeaderContainer = styled.header`
   z-index: 1000;
 `;
 
-const HeaderContent = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const LogoWrapper = styled.div`
+const Logo = styled.img`
+  height: 40px;
   cursor: pointer;
 `;
 
-const Logo = styled.img`
-  height: 40px;
-`;
-
-const NavWrapper = styled.div`
+const NavWrapper = styled.nav`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 368.28px;
+  height: 45px;
   background-color: white;
   border-radius: 8px;
-  padding: 10px 20px;
-`;
-
-const NavLinks = styled.nav`
-  display: flex;
-  gap: 20px;
 `;
 
 const NavLink = styled(Link)`
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
   color: black;
   text-decoration: none;
-  font-size: 12px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-`;
-
-const RightSection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`;
-
-const UserInfo = styled.div`
-  font-size: 12px;
-  color: white;
-`;
-
-const AuthButton = styled.button`
-  background: none;
-  border: none;
-  color: white;
-  font-size: 12px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  cursor: pointer;
 `;
 
 const JoinUsButton = styled.button`
-  background-color: #B9FF82;
-  color: #000;
+  width: 101.80px;
+  height: 45px;
+  background-color: rgb(186, 255, 130);
   border: none;
-  padding: 8px 16px;
   border-radius: 8px;
-  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
   font-weight: 800;
+  color: black;
   cursor: pointer;
 `;
 

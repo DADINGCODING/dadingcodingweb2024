@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import FloatingBubbles from '../common/FloatingBubbles';
+import About from './About';  // About 컴포넌트 import
 
 const Home: React.FC = () => {
   const contentRef = useRef<HTMLDivElement>(null);
+  const aboutRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
@@ -20,39 +22,54 @@ const Home: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (window.location.hash === '#about') {
+      aboutRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
+
   return (
     <HomeContainer>
-      <FloatingBubbles />
-      <ContentWrapper ref={contentRef}>
-        <Subtitle>코딩 교육 봉사 동아리</Subtitle>
-        <TitleWrapper>
-          <DadingTitle>DADING</DadingTitle>
-          <CodingTitle>
-            C<LogoO>🤓</LogoO>DING
-          </CodingTitle>
-        </TitleWrapper>
-        <Description>
-          코딩을 좋아한다면 누구나!
-          <br />
-          <Strong>지금 바로 ✨코딩 선생님✨이 되어보세요</Strong>
-        </Description>
-      </ContentWrapper>
-      <IconsContainer>
-        <FloatingEmoji style={{ left: '10%', top: '20%' }}>🖥️</FloatingEmoji>
-        <FloatingEmoji style={{ right: '15%', top: '30%' }}>💡</FloatingEmoji>
-        <FloatingEmoji style={{ left: '20%', bottom: '25%' }}>🔍</FloatingEmoji>
-        <FloatingEmoji style={{ right: '25%', bottom: '20%' }}>📁</FloatingEmoji>
-        <FloatingEmoji style={{ left: '30%', top: '40%' }}>📊</FloatingEmoji>
-        <FloatingEmoji style={{ right: '35%', top: '50%' }}>✨</FloatingEmoji>
-      </IconsContainer>
+      <HeroSection>
+        <FloatingBubbles />
+        <ContentWrapper ref={contentRef}>
+          <Subtitle>코딩 교육 봉사 동아리</Subtitle>
+          <TitleWrapper>
+            <DadingTitle>DADING</DadingTitle>
+            <CodingTitle>
+              C<LogoO>🤓</LogoO>DING
+            </CodingTitle>
+          </TitleWrapper>
+          <Description>
+            코딩을 좋아한다면 누구나!
+            <br />
+            <Strong>지금 바로 ✨코딩 선생님✨이 되어보세요</Strong>
+          </Description>
+        </ContentWrapper>
+        <IconsContainer>
+          <FloatingEmoji style={{ left: '10%', top: '20%' }}>🖥️</FloatingEmoji>
+          <FloatingEmoji style={{ right: '15%', top: '30%' }}>💡</FloatingEmoji>
+          <FloatingEmoji style={{ left: '20%', bottom: '25%' }}>🔍</FloatingEmoji>
+          <FloatingEmoji style={{ right: '25%', bottom: '20%' }}>📁</FloatingEmoji>
+          <FloatingEmoji style={{ left: '30%', top: '40%' }}>📊</FloatingEmoji>
+          <FloatingEmoji style={{ right: '35%', top: '50%' }}>✨</FloatingEmoji>
+        </IconsContainer>
+      </HeroSection>
+      
+      <AboutSection id="about" ref={aboutRef}>
+        <About />
+      </AboutSection>
     </HomeContainer>
   );
 };
 
 const HomeContainer = styled.div`
+  background: linear-gradient(to bottom, #000000, #1a1a1a);
+`;
+
+const HeroSection = styled.section`
   position: relative;
   height: 100vh;
-  background: linear-gradient(to bottom, #000000, #1a1a1a);
   overflow: hidden;
 `;
 
@@ -123,12 +140,12 @@ const Description = styled.p`
   font-weight: 300;
   line-height: 1.4;
   margin-top: 40px;
-  color: white;  // 글씨 색상을 흰색으로 변경
+  color: white;
 `;
 
 const Strong = styled.span`
   font-weight: 600;
-  color: white;  // Strong 부분도 흰색으로 유지
+  color: white;
 `;
 
 const float = keyframes`
@@ -151,6 +168,11 @@ const FloatingEmoji = styled.div`
   font-size: 50px;
   opacity: 0.4;
   animation: ${float} 3s ease-in-out infinite;
+`;
+
+const AboutSection = styled.section`
+  min-height: 100vh;
+  padding: 2rem;
 `;
 
 export default Home;

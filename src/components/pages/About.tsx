@@ -5,11 +5,11 @@ import FloatingBubbles from '../common/FloatingBubbles';
 const activityData = [
   { emoji: "🏫", title: "대딩코딩이란", content: "2021년 8월에 시작된\n코딩 교육 봉사 동아리입니다." },
   { emoji: "🚀", title: "우리의 비전", content: "프로그래밍 사고력 증진을 목표로,\n효과적인 코딩 교육을 제공합니다." },
-  { emoji: "👨‍🏫", title: "튜터 활동", content: "매달 1회 온라인 회의,\n주 1회 2시간 수업 진행 및\n활동일지 제출." },
+  { emoji: "👨‍🏫", title: "튜터 활동", content: "매달 1회 온라인 회의,\n주 1회 2시간 수업 진행 및\n학기중 튜터활동" },
   { emoji: "💻", title: "수업 내용", content: "Python 기초부터\n간단한 알고리즘 문제풀이까지\n다양한 프로그램 제공." },
   { emoji: "📅", title: "7기 튜터 모집", content: "9월 6일~13일 서류접수,\n19일~22일 면접,\n23일 발표, 29일 OT(대면)" },
   { emoji: "🎓", title: "학생 모집", content: "9월 9일~20일 모집,\n10월 1일~11월 30일 중\n6주 수업 (2주 휴식)" },
-  { emoji: "🎉", title: "활동 혜택", content: "봉사시간 인정(32시간, 임원진 40시간),\n수료증 발급, 문화 혜택 제공" },
+  { emoji: "🎉", title: "활동 혜택", content: "봉사시간 인정(32시간, \n운영진 40시간),\n수료증 발급, 문화 혜택 제공" },
 ];
 
 const About: React.FC = () => {
@@ -66,7 +66,7 @@ const About: React.FC = () => {
               <SchoolName>동북고등학교</SchoolName>
             </SchoolCard>
             <SchoolCard>
-              <SchoolImage src="/assets/images/school2.jpg" alt="서울여자고등학교" />
+              <SchoolImage src="/assets/images/school2.jpg" alt="정신여고등학교" />
               <SchoolName>서울여자고등학교</SchoolName>
             </SchoolCard>
           </SchoolContainer>
