@@ -1,47 +1,84 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleAboutClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (location.pathname === '/') {
+      const aboutSection = document.getElementById('about');
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      navigate('/#about');
+    }
+  };
+
   return (
     <HeaderContainer>
-      <Logo>DADINGCODING</Logo>
-      <NavLinks>
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/about">About</NavLink>
-        <NavLink to="/tutor">Tutor</NavLink>
+      <Logo src="/mainlogo2024.png" alt="DADINGCODING" onClick={() => navigate('/')} />
+      <NavWrapper>
         <NavLink to="/notice">Notice</NavLink>
-      </NavLinks>
+        <NavLink to="/#about" onClick={handleAboutClick}>About</NavLink>
+        <NavLink to="/tutor">Tutor</NavLink>
+        <NavLink to="/login">Login</NavLink>
+      </NavWrapper>
+      <JoinUsButton onClick={() => navigate('/register')}>Join us!</JoinUsButton>
     </HeaderContainer>
   );
 };
 
 const HeaderContainer = styled.header`
-  background-color: #000;
-  color: #fff;
-  padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 10px 20px;
+  background-color: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 `;
 
-const Logo = styled.h1`
-  font-size: 24px;
-  color: #B9FF82;
+const Logo = styled.img`
+  height: 40px;
+  cursor: pointer;
 `;
 
-const NavLinks = styled.nav`
+const NavWrapper = styled.nav`
   display: flex;
-  gap: 20px;
+  justify-content: space-around;
+  align-items: center;
+  width: 368.28px;
+  height: 45px;
+  background-color: white;
+  border-radius: 8px;
 `;
 
 const NavLink = styled(Link)`
-  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: black;
   text-decoration: none;
-  font-size: 16px;
-  &:hover {
-    color: #B9FF82;
-  }
+`;
+
+const JoinUsButton = styled.button`
+  width: 101.80px;
+  height: 45px;
+  background-color: rgb(186, 255, 130);
+  border: none;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  color: black;
+  cursor: pointer;
 `;
 
 export default Header;
