@@ -1,80 +1,253 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import FloatingBubbles from '../common/FloatingBubbles';
+
+const activityData = [
+  { emoji: "🏫", title: "대딩코딩이란", content: "2021년 8월에 시작된\n코딩 교육 봉사 동아리입니다." },
+  { emoji: "🚀", title: "우리의 비전", content: "프로그래밍 사고력 증진을 목표로,\n효과적인 코딩 교육을 제공합니다." },
+  { emoji: "👨‍🏫", title: "튜터 활동", content: "매달 1회 온라인 회의,\n주 1회 2시간 수업 진행 및\n학기중 튜터활동" },
+  { emoji: "💻", title: "수업 내용", content: "Python 기초부터\n간단한 알고리즘 문제풀이까지\n다양한 프로그램 제공." },
+  { emoji: "📅", title: "7기 튜터 모집", content: "9월 6일~13일 서류접수,\n19일~22일 면접,\n23일 발표, 29일 OT(대면)" },
+  { emoji: "🎓", title: "학생 모집", content: "9월 9일~20일 모집,\n10월 1일~11월 30일 중\n6주 수업 (2주 휴식)" },
+  { emoji: "🎉", title: "활동 혜택", content: "봉사시간 인정(32시간, \n운영진 40시간),\n수료증 발급, 문화 혜택 제공" },
+];
 
 const About: React.FC = () => {
-  const activities = [
-    { title: '대딩코딩이란', content: '대딩코딩은 2021년 8월에 시작된 코딩 교육 봉사 동아리입니다. 대학생들이 모여 초·중·고등학생들에게 코딩을 가르치며 함께 성장합니다.', image: '/images/activity1.jpg' },
-    { title: '우리의 비전', content: '프로그래밍 사고력 증진을 목표로, 초·중·고등학생을 대상으로 효과적인 코딩 교육을 제공합니다. 우리는 코딩 교육을 통해 미래 인재를 양성하고자 합니다.', image: '/images/activity2.jpg' },
-    { title: '튜터 활동', content: '매달 1회 마지막주 월요일 23시에 약 30분 간 온라인 회의 참석, 주 1회 2시간 씩 수업 진행. 튜터들은 학생들의 눈높이에 맞춰 코딩을 가르치며 리더십과 의사소통 능력을 키웁니다.', image: '/images/activity3.jpg' },
-    { title: '봉사활동 수업 내용', content: 'Python 기초 과정부터 간단한 알고리즘 문제풀이 과정까지, 자체 교안으로 학습자의 수준에 맞춘 다양한 교육 프로그램을 제공합니다. 실습과 프로젝트 중심의 학습으로 실제 코딩 능력을 향상시킵니다.', image: '/images/activity4.jpg' },
-  ];
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const aboutRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollPosition(window.pageYOffset);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const cardsVisible = scrollPosition > (aboutRef.current?.offsetTop ?? 0) - window.innerHeight / 2;
 
   return (
-    <AboutContainer>
-      <Title>About Us</Title>
-      <ActivityGrid>
-        {activities.map((activity, index) => (
-          <ActivityCard key={index} isEven={index % 2 === 0}>
-            <ActivityImage src={activity.image} alt={activity.title} />
-            <ActivityContent>
-              <ActivityTitle>{activity.title}</ActivityTitle>
-              <ActivityDescription>{activity.content}</ActivityDescription>
-            </ActivityContent>
-          </ActivityCard>
-        ))}
-      </ActivityGrid>
+    <AboutContainer ref={aboutRef}>
+      <FloatingBubbles />
+      <BackgroundImage src="/assets/images/about_circular.jpeg" alt="Background" />
+      <Content>
+        <IntroSection>
+          <ActivityIntro>
+            <ActivityIntroBox>대딩코딩 활동 소개</ActivityIntroBox>
+          </ActivityIntro>
+          <IntroText>
+            <IntroLine>우리의 활동들을</IntroLine>
+            <IntroLine>소개할게</IntroLine>
+          </IntroText>
+          <WhatWeDo>what we do!</WhatWeDo>
+        </IntroSection>
+
+        <CardSection ref={cardsRef} visible={cardsVisible}>
+          {activityData.map((activity, index) => (
+            <Card key={index}>
+              <CardInner>
+                <CardEmoji>{activity.emoji}</CardEmoji>
+                <CardContent>
+                  <CardTitle>{activity.title}</CardTitle>
+                  <CardDescription>{activity.content}</CardDescription>
+                </CardContent>
+              </CardInner>
+            </Card>
+          ))}
+        </CardSection>
+
+        <SchoolSection>
+          <SchoolTitle>협약 학교</SchoolTitle>
+          <SchoolContainer>
+            <SchoolCard>
+              <SchoolImage src="/assets/images/school1.jpg" alt="동북고등학교" />
+              <SchoolName>동북고등학교</SchoolName>
+              
+            </SchoolCard>
+            <SchoolCard>
+              <SchoolImage src="/assets/images/school2.jpg" alt="정신여고등학교" />
+              <SchoolName>정신여자고등학교</SchoolName>
+            </SchoolCard>
+          </SchoolContainer>
+        </SchoolSection>
+      </Content>
     </AboutContainer>
   );
 };
 
 const AboutContainer = styled.div`
-  padding: 40px 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #000000, #1a1a1a);
 `;
 
-const Title = styled.h1`
-  font-size: 48px;
-  color: #B9FF82;
-  text-align: center;
+const BackgroundImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+`;
+
+const Content = styled.div`
+  position: relative;
+  z-index: 2;
+  padding: 80px 20px;
+  color: #fff;
+`;
+
+const IntroSection = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 836px;
+  margin: 0 auto;
+  text-align: left;
+`;
+
+const ActivityIntro = styled.div`
   margin-bottom: 40px;
 `;
 
-const ActivityGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 40px;
+const ActivityIntroBox = styled.div`
+  display: inline-block;
+  padding: 10px 20px;
+  background: black;
+  color: #B9FF82;
+  font-size: 20px;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 600;
+  border-radius: 30px;
 `;
 
-const ActivityCard = styled.div<{ isEven: boolean }>`
+const IntroText = styled.div`
+  font-size: 42px;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 20px;
+`;
+
+const IntroLine = styled.div`
   display: flex;
-  flex-direction: ${props => props.isEven ? 'row' : 'row-reverse'};
-  background-color: #111;
+  align-items: center;
+  margin-bottom: 10px;
+
+  &::before {
+    content: '';
+    height: 4px;
+    background-color: #B9FF82;
+    margin-right: 10px;
+    transition: width 0.5s ease-out;
+  }
+
+  &:nth-child(1)::before { width: 258px; }
+  &:nth-child(2)::before { width: 75px; }
+`;
+
+const WhatWeDo = styled.div`
+  color: #B9FF82;
+  font-size: 21px;
+  font-family: 'NeoDunggeunmo Pro', sans-serif;
+  margin-top: 20px;
+`;
+
+const CardSection = styled.div<{ visible: boolean }>`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px 0;
+  margin-top: 60px;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: ${props => props.visible ? 1 : 0};
+  transform: ${props => props.visible ? 'translateY(0)' : 'translateY(50px)'};
+`;
+
+const Card = styled.div`
+  flex: 0 1 calc(33.333% - 20px);
+  min-width: 280px;
+  height: 280px;
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
 `;
 
-const ActivityImage = styled.img`
-  width: 50%;
-  object-fit: cover;
-`;
-
-const ActivityContent = styled.div`
-  width: 50%;
+const CardInner = styled.div`
+  height: 100%;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 `;
 
-const ActivityTitle = styled.h2`
+const CardEmoji = styled.div`
+  font-size: 48px;
+  margin-bottom: 20px;
+`;
+
+const CardContent = styled.div`
+  color: white;
+`;
+
+const CardTitle = styled.h3`
   font-size: 24px;
-  color: #B9FF82;
   margin-bottom: 10px;
 `;
 
-const ActivityDescription = styled.p`
+const CardDescription = styled.p`
   font-size: 16px;
-  color: white;
-  line-height: 1.6;
+  white-space: pre-line;
+`;
+
+const SchoolSection = styled.div`
+  margin-top: 60px;
+`;
+
+const SchoolTitle = styled.h2`
+  font-size: 32px;
+  color: #B9FF82;
+  margin-bottom: 20px;
+`;
+
+const SchoolContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+`;
+
+const SchoolCard = styled.div`
+  width: 45%;
+  margin-bottom: 20px;
+  background: rgba(185, 255, 130, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+`;
+
+const SchoolImage = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+`;
+
+const SchoolName = styled.h3`
+  font-size: 24px;
+  color: #fff;
+  text-align: center;
 `;
 
 export default About;
