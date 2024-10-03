@@ -1,43 +1,53 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
+import { useRole } from '../../hooks/useRole';
 
-const Header: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+interface HeaderProps {
+  isDarkMode: boolean;
+}
 
-  const handleAboutClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (location.pathname === '/') {
-      const aboutSection = document.getElementById('about');
-      if (aboutSection) {
-        aboutSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else {
-      navigate('/#about');
-    }
-  };
+export const Header: React.FC<HeaderProps> = ({ isDarkMode }) => {
+  const { user } = useAuth();
+  const { role } = useRole();
 
   return (
-    <HeaderContainer>
-      <Logo src="/mainlogo2024.png" alt="DADINGCODING" onClick={() => navigate('/')} />
-      <NavWrapper>
-        <NavLink to="/notice">Notice</NavLink>
-        <NavLink to="/#about" onClick={handleAboutClick}>About</NavLink>
-        <NavLink to="/tutor">Tutor</NavLink>
-        <NavLink to="/login">Login</NavLink>
-      </NavWrapper>
-      <JoinUsButton onClick={() => navigate('/register')}>Join us!</JoinUsButton>
+    <HeaderContainer isDark={isDarkMode}>
+      <Logo isDark={isDarkMode}>
+        <img src={isDarkMode ? "/assets/images/logo_dark.png" : "/assets/images/logo_light.png"} alt="Dading Coding Logo" />
+      </Logo>
+      <Nav>
+        <NavLink to="/notice" isDark={isDarkMode}>Notice</NavLink>
+        <NavLink to="/about" isDark={isDarkMode}>About</NavLink>
+        <NavLink to="/tutor" isDark={isDarkMode}>Tutor</NavLink>
+        {user && <NavLink to="/dashboard" isDark={isDarkMode}>Dashboard</NavLink>}
+        {user && <NavLink to="/mypage" isDark={isDarkMode}>My page</NavLink>}
+      </Nav>
+      <UserInfo isDark={isDarkMode}>
+        {user ? (
+          <>
+            <span>{user.name}({role}) 님 안녕하세요!</span>
+            <NavLink to="/logout" isDark={isDarkMode}>Logout</NavLink>
+          </>
+        ) : (
+          <>
+            <NavLink to="/login" isDark={isDarkMode}>Login</NavLink>
+            <NavLink to="/register" isDark={isDarkMode}>Register</NavLink>
+          </>
+        )}
+      </UserInfo>
     </HeaderContainer>
   );
 };
 
-const HeaderContainer = styled.header`
+const HeaderContainer = styled.header<{ isDark: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: black;
+  padding: 1rem;
+  background-color: ${props => props.isDark ? '#333' : '#f8f9fa'};
+  color: ${props => props.isDark ? '#fff' : '#333'};
   position: fixed;
   top: 0;
   left: 0;
@@ -45,40 +55,30 @@ const HeaderContainer = styled.header`
   z-index: 1000;
 `;
 
-const Logo = styled.img`
-  height: 40px;
-  cursor: pointer;
+const Logo = styled.div<{ isDark: boolean }>`
+  font-size: 1.5rem;
+  font-weight: bold;
+  img {
+    height: 40px;
+  }
 `;
 
-const NavWrapper = styled.nav`
+const Nav = styled.nav`
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 368.28px;
-  height: 45px;
-  background-color: white;
-  border-radius: 8px;
+  gap: 1rem;
 `;
 
-const NavLink = styled(Link)`
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  color: black;
+const NavLink = styled(Link)<{ isDark: boolean }>`
   text-decoration: none;
+  color: ${props => props.isDark ? '#fff' : '#333'};
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
-const JoinUsButton = styled.button`
-  width: 101.80px;
-  height: 45px;
-  background-color: rgb(186, 255, 130);
-  border: none;
-  border-radius: 8px;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 800;
-  color: black;
-  cursor: pointer;
+const UserInfo = styled.div<{ isDark: boolean }>`
+  font-size: 0.9rem;
+  color: ${props => props.isDark ? '#fff' : '#333'};
+  display: flex;
+  gap: 1rem;
 `;
-
-export default Header;

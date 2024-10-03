@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useAuth } from '../../hooks/useAuth';
 import { useRole } from '../../hooks/useRole';
-import { Navigate } from 'react-router-dom';
 
 const Notice: React.FC = () => {
   const { user } = useAuth();
-  const { isAdmin } = useRole();
+  const { role } = useRole();
   const [posts, setPosts] = useState([
     { id: 1, title: '[공지] 게시글 제목', author: '홍길동', date: '2024-08-08' },
     { id: 2, title: '게시글 제목', author: '홍길동', date: '2024-08-08' },
@@ -14,11 +13,6 @@ const Notice: React.FC = () => {
   ]);
   const [showWriteForm, setShowWriteForm] = useState(false);
   const [newPost, setNewPost] = useState({ title: '', content: '' });
-
-  // 로그인하지 않은 사용자 리디렉션
-  if (!user) {
-    return <Navigate to="/login" />;
-  }
 
   const handleWrite = () => {
     setShowWriteForm(true);
@@ -31,40 +25,48 @@ const Notice: React.FC = () => {
     setNewPost({ title: '', content: '' });
   };
 
+  const canEdit = user && (role === 'admin' || role === 'tutor');
+
   return (
     <NoticeContainer>
-      <BlurBackground />
       <ContentWrapper>
-        <Title>NOTICE</Title>
-        <Table>
-          <thead>
-            <tr>
-              <Th>게시일자</Th>
-              <Th>제목</Th>
-              <Th>작성자</Th>
-              {isAdmin && <Th>관리</Th>}
-            </tr>
-          </thead>
-          <tbody>
-            {posts.map((post) => (
-              <Tr key={post.id}>
-                <Td>{post.date}</Td>
-                <Td>{post.title}</Td>
-                <Td>{post.author}</Td>
-                {isAdmin && (
-                  <Td>
-                    <Button onClick={() => {/* 수정 로직 */}}>수정</Button>
-                    <Button onClick={() => {/* 삭제 로직 */}}>삭제</Button>
-                  </Td>
-                )}
+        <TitleBar>
+          <Title>NOTICE</Title>
+        </TitleBar>
+        <TableWrapper>
+          <Table>
+            <thead>
+              <Tr>
+                <Th>게시일자</Th>
+                <Th>제목</Th>
+                <Th>작성자</Th>
+                {canEdit && <Th>관리</Th>}
               </Tr>
-            ))}
-          </tbody>
-        </Table>
-        {isAdmin && (
-          <ButtonWrapper>
-            <Button onClick={handleWrite}>글쓰기</Button>
-          </ButtonWrapper>
+            </thead>
+            <tbody>
+              {posts.map((post) => (
+                <Tr key={post.id}>
+                  <Td>{post.date}</Td>
+                  <Td>{post.title}</Td>
+                  <Td>{post.author}</Td>
+                  {canEdit && (
+                    <Td>
+                      <Button onClick={() => {/* 수정 로직 */}}>수정</Button>
+                      <Button onClick={() => {/* 삭제 로직 */}}>삭제</Button>
+                    </Td>
+                  )}
+                </Tr>
+              ))}
+            </tbody>
+          </Table>
+        </TableWrapper>
+        {canEdit && (
+          <WriteButtonWrapper>
+            <WriteButton onClick={handleWrite}>
+              <WriteIcon />
+              <span>게시글 작성</span>
+            </WriteButton>
+          </WriteButtonWrapper>
         )}
         {showWriteForm && (
           <WriteForm onSubmit={handleSubmit}>
@@ -86,86 +88,98 @@ const Notice: React.FC = () => {
     </NoticeContainer>
   );
 };
+ 
 
 const NoticeContainer = styled.div`
-  position: relative;
   width: 100%;
   min-height: 100vh;
-  padding: 20px;
+  background: #808080;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-`;
-
-const BlurBackground = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(107deg, rgba(185, 255, 130, 0.3) 0%, rgba(0, 239, 138, 0.3) 100%);
-  filter: blur(100px);
-  z-index: -1;
+  align-items: center;
+  padding: 20px;
 `;
 
 const ContentWrapper = styled.div`
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 20px;
-  padding: 40px;
+  width: 1049.55px;
+  background: rgba(217, 217, 217, 0.10);
+  border-radius: 61px;
+  border: 3px solid white;
+  backdrop-filter: blur(35px);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const TitleBar = styled.div`
   width: 100%;
-  max-width: 1000px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  height: 49.74px;
+  background: linear-gradient(107deg, #B9FF82 0%, #00EF8A 100%);
+  border-radius: 61px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  margin-bottom: 20px;
 `;
 
 const Title = styled.h1`
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: #333;
+  color: black;
+  font-size: 24px;
+  font-weight: 600;
+`;
+
+const TableWrapper = styled.div`
+  overflow-x: auto;
 `;
 
 const Table = styled.table`
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 10px;
+  border-collapse: collapse;
 `;
 
 const Th = styled.th`
   text-align: left;
   padding: 10px;
-  background-color: rgba(185, 255, 130, 0.5);
-  color: #333;
+  color: black;
+  font-size: 24px;
   font-weight: 600;
 `;
 
 const Tr = styled.tr`
-  background-color: rgba(255, 255, 255, 0.6);
+  border-bottom: 1.30px solid #E7E7E7;
 `;
 
 const Td = styled.td`
-  padding: 15px 10px;
+  padding: 10px;
+  color: black;
+  font-size: 22px;
+  font-weight: 400;
 `;
 
-const Button = styled.button`
-  background-color: #B9FF82;
-  color: #000;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 600;
-  margin-right: 10px;
-  
-  &:hover {
-    background-color: #9AE065;
-  }
-`;
-
-const ButtonWrapper = styled.div`
+const WriteButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
   margin-top: 20px;
-  text-align: right;
+`;
+
+const WriteButton = styled.button`
+  background: linear-gradient(107deg, #B9FF82 0%, #00EF8A 100%);
+  border: none;
+  border-radius: 50%;
+  width: 111.65px;
+  height: 111.65px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const WriteIcon = styled.div`
+  width: 14.95px;
+  height: 18.67px;
+  border: 1px solid black;
+  margin-bottom: 5px;
 `;
 
 const WriteForm = styled.form`
@@ -186,6 +200,17 @@ const TextArea = styled.textarea`
   border: 1px solid #ddd;
   border-radius: 5px;
   min-height: 100px;
+`;
+
+const Button = styled.button`
+  background-color: #B9FF82;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  align-self: flex-end;
 `;
 
 export default Notice;

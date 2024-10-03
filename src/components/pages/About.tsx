@@ -64,10 +64,11 @@ const About: React.FC = () => {
             <SchoolCard>
               <SchoolImage src="/assets/images/school1.jpg" alt="동북고등학교" />
               <SchoolName>동북고등학교</SchoolName>
+              
             </SchoolCard>
             <SchoolCard>
               <SchoolImage src="/assets/images/school2.jpg" alt="정신여고등학교" />
-              <SchoolName>서울여자고등학교</SchoolName>
+              <SchoolName>정신여자고등학교</SchoolName>
             </SchoolCard>
           </SchoolContainer>
         </SchoolSection>
