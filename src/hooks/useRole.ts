@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from './useAuth';
+import { useAuth } from './useAuth'; // 인증 훅이 필요하다면 import
 import { UserRole } from '../types/user';
 
 interface UseRoleReturn {
@@ -9,9 +9,9 @@ interface UseRoleReturn {
 }
 
 export const useRole = (): UseRoleReturn => {
-  const { user } = useAuth();
   const [role, setRole] = useState<UserRole>('student');
   const [isAdmin, setIsAdmin] = useState(false);
+  const { user } = useAuth(); // 만약 인증된 사용자의 정보를 가져오고 싶다면
 
   useEffect(() => {
     if (user) {

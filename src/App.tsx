@@ -12,6 +12,7 @@ import Register from './components/auth/Register';
 import GlobalStyle from './styles/GlobalStyle';
 import Tutor from './components/pages/Tutor';
 import MyPage from './components/pages/MyPage';
+import JoinUs from './components/pages/JoinUs';
 
 const App: React.FC = () => {
   return (
@@ -50,6 +51,8 @@ const AppContent: React.FC = () => {
             <Route path="/notice" element={<Notice />} />
             <Route path="/tutor" element={<Tutor />} />
             <Route path="/mypage" element={<MyPage />} />
+            <Route path="/joinus" element={<JoinUs />} />
+
           </Routes>
         </MainContent>
         <Footer />

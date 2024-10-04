@@ -1,50 +1,26 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React from 'react';
+//import styled from 'styled-components';
+//import { useRole } from '../../hooks/useRole';
+import { UserRole } from '../../types/user';
+import { Navigate } from 'react-router-dom';
+import PreTutorForm from '../forms/PreTutorForm'; // 예비 튜터 지원서 컴포넌트
+// 다른 역할별 컴포넌트도 추가 가능 (TutorForm, AdminForm 등)
 
 const JoinUs: React.FC = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  //const { role } = useRole(); // 현재 사용자 역할 가져오기
+  const role: UserRole = 'preTutor';
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // 지원서 제출 로직 구현
-    console.log('Application submitted:', { name, email, message });
-  };
+  if (!role) {
+    return <Navigate to="/" replace />; // 역할이 없는 경우 홈으로 리디렉션
+  }
 
   return (
-    <JoinUsContainer>
-      <h2>대딩코딩에 지원하기</h2>
-      <JoinUsForm onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="이름"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="email"
-          placeholder="이메일"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <textarea
-          placeholder="지원 동기"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <button type="submit">지원하기</button>
-      </JoinUsForm>
-    </JoinUsContainer>
+    <div>
+      {role === 'preTutor' && <PreTutorForm />} {/* 예비 튜터 */}
+      {/*role === 'tutor' && <p>튜터 지원 페이지 준비 중입니다.</p>*/} {/* 다른 역할 자리 */}
+      {/*role === 'admin' && <p>관리자 페이지 준비 중입니다.</p>*/} {/* 관리자 자리 */}
+    </div>
   );
 };
-
-const JoinUsContainer = styled.div`
-  // 스타일 추가
-`;
-
-const JoinUsForm = styled.form`
-  // 스타일 추가
-`;
 
 export default JoinUs;
