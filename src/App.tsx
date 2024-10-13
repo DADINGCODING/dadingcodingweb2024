@@ -1,34 +1,63 @@
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import Header from './components/common/Header';
+import { Header } from './components/common/Header';
 import Footer from './components/common/Footer';
+import Home from './components/pages/Home';
+import About from './components/pages/About';
+import Notice from './components/pages/Notice';
+import Dashboard from './components/pages/Dashboard';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
 import GlobalStyle from './styles/GlobalStyle';
-
-const Home = lazy(() => import('./components/pages/Home'));
-const About = lazy(() => import('./components/pages/About'));
-const Tutor = lazy(() => import('./components/pages/Tutor'));
-const Notice = lazy(() => import('./components/pages/Notice'));
+import Tutor from './components/pages/Tutor';
+import MyPage from './components/pages/MyPage';
+import JoinUs from './components/pages/JoinUs';
 
 const App: React.FC = () => {
   return (
     <Router>
+      <AppContent />
+    </Router>
+  );
+};
+
+const AppContent: React.FC = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash === '#about') {
+      const aboutSection = document.getElementById('about');
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [location]);
+
+  const isDarkMode = location.pathname === '/' || location.pathname === '/about';
+
+  return (
+    <>
+      <GlobalStyle />
       <AppContainer>
-        <GlobalStyle />
-        <Header />
+        <Header isDarkMode={isDarkMode} />
         <MainContent>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/tutor" element={<Tutor />} />
-              <Route path="/notice" element={<Notice />} />
-            </Routes>
-          </Suspense>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/notice" element={<Notice />} />
+            <Route path="/tutor" element={<Tutor />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/joinus" element={<JoinUs />} />
+
+          </Routes>
         </MainContent>
         <Footer />
       </AppContainer>
-    </Router>
+    </>
   );
 };
 
@@ -36,13 +65,11 @@ const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #000000;
-  color: white;
 `;
 
 const MainContent = styled.main`
   flex: 1;
-  padding-top: 80px; // Adjust based on your header height
+  padding-top: 80px; // Header의 높이만큼 여백 추가
 `;
 
 export default App;
